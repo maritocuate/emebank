@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import axios from 'axios'
+import { toast } from '@/components/ui/use-toast'
 
 interface AuthFormProps {
   mode: 'login' | 'register'
@@ -29,7 +31,21 @@ export default function AuthForm({ mode }: AuthFormProps) {
     },
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = data => console.log(data)
+  const onSubmit: SubmitHandler<FieldValues> = data => {
+    if (mode === 'register') {
+      axios
+        .post('/api/accounts', data)
+        //.then(() => signIn('credentials', data))
+        .then(() => toast({ description: 'Account created.' }))
+        .catch(res =>
+          toast({
+            title: 'Error',
+            description: String(res.response.data),
+            variant: 'destructive',
+          })
+        )
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -15,5 +15,6 @@ model User {
   email String @unique
   username String
   password String
+  balance Int
   createdAt DateTime @default(now())
 }
