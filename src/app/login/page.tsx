@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AuthForm from './components/AuthForm'
 
-export default function AuthPage() {
+export default function LoginPage() {
   return (
     <div className="flex flex-col justify-center items-center mt-3 sm:mx-auto sm:w-full sm:max-w-md">
       <Tabs defaultValue="login" className="w-full justify-center">

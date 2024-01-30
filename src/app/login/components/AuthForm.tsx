@@ -13,12 +13,15 @@ import { Input } from '@/components/ui/input'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 interface AuthFormProps {
   mode: 'login' | 'register'
 }
 
 export default function AuthForm({ mode }: AuthFormProps) {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -31,16 +34,33 @@ export default function AuthForm({ mode }: AuthFormProps) {
     },
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
+    if (mode === 'login') {
+      const res = await signIn('credentials', {
+        ...data,
+        redirect: false,
+      })
+
+      if (res?.error) {
+        toast({
+          title: 'Error',
+          description: res.error,
+          variant: 'destructive',
+        })
+      } else {
+        router.push('/dashboard')
+      }
+    }
+
     if (mode === 'register') {
       axios
         .post('/api/accounts', data)
         //.then(() => signIn('credentials', data))
-        .then(() => toast({ description: 'Account created.' }))
+        .then(() => toast({ description: 'Account created' }))
         .catch(res =>
           toast({
             title: 'Error',
-            description: String(res.response.data),
+            description: res.response.data,
             variant: 'destructive',
           })
         )
