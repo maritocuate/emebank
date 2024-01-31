@@ -10,14 +10,8 @@ import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { RecentSales } from './components/recent-sales'
 import Logo from './components/logo'
 import { UserNav } from './components/user-nav'
-import {
-  CircleDollarSign,
-  CreditCard,
-  MinusCircle,
-  PlusCircle,
-} from 'lucide-react'
+import { CircleDollarSign, CreditCard } from 'lucide-react'
 import { fetchUser } from '@/lib/data'
-import { Button } from '@/components/ui/button'
 import ActionsBar from './components/actions-bar'
 
 interface DashboardProps {
