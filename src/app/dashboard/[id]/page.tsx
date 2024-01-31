@@ -10,8 +10,15 @@ import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { RecentSales } from './components/recent-sales'
 import Logo from './components/logo'
 import { UserNav } from './components/user-nav'
-import { CircleDollarSign, CreditCard } from 'lucide-react'
+import {
+  CircleDollarSign,
+  CreditCard,
+  MinusCircle,
+  PlusCircle,
+} from 'lucide-react'
 import { fetchUser } from '@/lib/data'
+import { Button } from '@/components/ui/button'
+import ActionsBar from './components/actions-bar'
 
 interface DashboardProps {
   params: {
@@ -40,8 +47,9 @@ export default async function DashboardPage({ params }: DashboardProps) {
           </div>
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
+          <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <ActionsBar />
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsContent value="overview" className="space-y-4">
