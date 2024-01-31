@@ -10,8 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { RecentSales } from './components/recent-sales'
-import { Search } from './components/search'
-import WelcomeLogo from './components/welcome-logo'
+import Logo from './components/logo'
 import { UserNav } from './components/user-nav'
 import { useSession } from 'next-auth/react'
 import { CircleDollarSign, CreditCard } from 'lucide-react'
@@ -24,9 +23,11 @@ export default function DashboardPage() {
       <div className="flex flex-col">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            <WelcomeLogo username={session.data?.user?.username || 'Guest'} />
+            <Logo />
             <div className="ml-auto flex items-center space-x-4">
-              <Search />
+              <div className="capitalize text-sm">
+                Welcome {session.data?.user?.username}
+              </div>
               <UserNav
                 username={session.data?.user?.username || 'Guest'}
                 email={session.data?.user?.email || ''}
