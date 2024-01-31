@@ -1,3 +1,5 @@
+'use client'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 interface UserNavProps {
   username: string
@@ -19,8 +21,6 @@ interface UserNavProps {
 }
 
 export function UserNav({ username, email }: UserNavProps) {
-  const route = useRouter()
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +42,7 @@ export function UserNav({ username, email }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => route.push('/dashboard/profile')}>
+          <DropdownMenuItem onClick={() => redirect('/dashboard/profile')}>
             Profile
           </DropdownMenuItem>
           <DropdownMenuItem>Debit</DropdownMenuItem>

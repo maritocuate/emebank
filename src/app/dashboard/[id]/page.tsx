@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Card,
   CardContent,
@@ -7,16 +5,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsContent } from '@/components/ui/tabs'
 
 import { RecentSales } from './components/recent-sales'
 import Logo from './components/logo'
 import { UserNav } from './components/user-nav'
-import { useSession } from 'next-auth/react'
 import { CircleDollarSign, CreditCard } from 'lucide-react'
+import { fetchUser } from '@/lib/data'
 
-export default function DashboardPage() {
-  const session = useSession()
+interface DashboardProps {
+  params: {
+    id: string
+    username: string
+    email: string
+    balance: number
+  }
+}
+
+export default async function DashboardPage({ params }: DashboardProps) {
+  const { id } = params
+  const user = await fetchUser(id)
+  const { username, email, balance } = user
 
   return (
     <>
@@ -25,13 +34,8 @@ export default function DashboardPage() {
           <div className="flex h-16 items-center px-4">
             <Logo />
             <div className="ml-auto flex items-center space-x-4">
-              <div className="capitalize text-sm">
-                Welcome {session.data?.user?.username}
-              </div>
-              <UserNav
-                username={session.data?.user?.username || 'Guest'}
-                email={session.data?.user?.email || ''}
-              />
+              <div className="capitalize text-sm">Welcome {username}</div>
+              <UserNav username={username} email={email} />
             </div>
           </div>
         </div>
@@ -50,9 +54,7 @@ export default function DashboardPage() {
                     <CircleDollarSign className="text-primary" size={18} />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
-                      ${session.data?.user?.balance}
-                    </div>
+                    <div className="text-2xl font-bold">${balance}</div>
                     <p className="text-xs text-muted-foreground">
                       +3.1% from last month
                     </p>

@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
-import { signIn } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 interface AuthFormProps {
@@ -48,7 +48,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
           variant: 'destructive',
         })
       } else {
-        router.push('/dashboard')
+        const session = await getSession()
+        const userId = session?.user.id
+        router.push(`/dashboard/${userId}`)
       }
     }
 
