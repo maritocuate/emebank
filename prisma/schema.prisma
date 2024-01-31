@@ -16,5 +16,14 @@ model User {
   username String
   password String
   balance Int
+  avatar String
   createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  accountId       String?
+  type            String?
+  amount          Int?
+  createdAt       DateTime @default(now())
 }

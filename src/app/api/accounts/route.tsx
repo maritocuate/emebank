@@ -28,6 +28,7 @@ export async function POST(request: Request) {
       balance: 0,
       email,
       password: hashedPassword,
+      avatar: '/images/avatar.png',
     },
   })
 
