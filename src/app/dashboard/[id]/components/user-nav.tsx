@@ -13,14 +13,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { signOut } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 interface UserNavProps {
+  userid: string
   username: string
   email: string
 }
 
-export function UserNav({ username, email }: UserNavProps) {
+export function UserNav({ userid, username, email }: UserNavProps) {
+  const route = useRouter()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,11 +45,11 @@ export function UserNav({ username, email }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => redirect('/dashboard/profile')}>
+          <DropdownMenuItem
+            onClick={() => route.push(`/dashboard/${userid}/profile`)}
+          >
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem>Debit</DropdownMenuItem>
-          <DropdownMenuItem>Withdrawal</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
