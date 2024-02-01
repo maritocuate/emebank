@@ -4,8 +4,12 @@ import { MinusCircle, PlusCircle } from 'lucide-react'
 import { toast } from '@/components/ui/use-toast'
 import Popup from '@/components/ui/popup'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
 import useUserStore from '@/store/userStore'
+
+enum TransactionType {
+  DEPOSIT = 'deposit',
+  WITHDRAWAL = 'withdrawal',
+}
 
 export default function ActionsBar() {
   const { data: session } = useSession()
