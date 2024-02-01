@@ -87,10 +87,10 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">OVERVIEW</CardTitle>
+              <CardTitle>Overview</CardTitle>
               <CircleDollarSign className="text-primary" size={18} />
             </CardHeader>
             <CardContent>
@@ -100,7 +100,7 @@ export default async function DashboardPage() {
               </p>
             </CardContent>
           </Card>
-          <Card className="col-span-3">
+          <Card>
             <CardHeader>
               <CardTitle>Recent Transactions</CardTitle>
               <CardDescription>You made 265 sales this month.</CardDescription>
