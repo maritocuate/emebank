@@ -9,11 +9,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Moon, Sun, ComputerIcon } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 
 interface UserNavProps {
   userid: string
@@ -23,6 +24,7 @@ interface UserNavProps {
 
 export function UserNav({ userid, username, email }: UserNavProps) {
   const route = useRouter()
+  const { setTheme } = useTheme()
 
   return (
     <DropdownMenu>
@@ -49,6 +51,20 @@ export function UserNav({ userid, username, email }: UserNavProps) {
             onClick={() => route.push(`/dashboard/${userid}/profile`)}
           >
             Profile
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setTheme('light')}>
+            Light
+            <Sun className="ml-2 h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('dark')}>
+            Dark
+            <Moon className="ml-2 h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('system')}>
+            System
+            <ComputerIcon className="ml-2 h-4 w-4" />
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
