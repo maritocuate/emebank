@@ -36,6 +36,23 @@ export default function AuthForm({ mode }: AuthFormProps) {
     },
   })
 
+  const getCurrentSession = async () => {
+    const session = await getSession()
+    const userId = session?.user.id
+
+    if (session?.user) {
+      const { id, username, email, balance, avatar } = session?.user
+      setUser({
+        id,
+        username,
+        email: email as string,
+        balance,
+        avatar,
+      })
+    }
+    router.push(`/dashboard/${userId}`)
+  }
+
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     if (mode === 'login') {
       const res = await signIn('credentials', {
@@ -50,35 +67,22 @@ export default function AuthForm({ mode }: AuthFormProps) {
           variant: 'destructive',
         })
       } else {
-        const session = await getSession()
-        const userId = session?.user.id
-
-        if (session?.user) {
-          const { id, username, email, balance, avatar } = session?.user
-          setUser({
-            id,
-            username,
-            email: email as string,
-            balance,
-            avatar,
-          })
-        }
-        router.push(`/dashboard/${userId}`)
+        getCurrentSession()
       }
     }
 
     if (mode === 'register') {
-      axios
-        .post('/api/accounts', data)
-        //.then(() => signIn('credentials', data))
+      await fetch('/api/accounts', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(() => signIn('credentials', data))
+        .catch(res => toast({ title: 'Error', description: res.response.data }))
         .then(() => toast({ description: 'Account created' }))
-        .catch(res =>
-          toast({
-            title: 'Error',
-            description: res.response.data,
-            variant: 'destructive',
-          })
-        )
+        .finally(() => getCurrentSession())
     }
   }
 
