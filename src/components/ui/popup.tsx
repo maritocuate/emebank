@@ -20,17 +20,10 @@ interface PopupProps {
   title: string
   description: string
   icon: React.ReactNode
-  setTypeTransaction: (type: TransactionType) => void
-  submitHandler?: (amount: number) => void
+  submitHandler?: (type: TransactionType, amount: number) => void
 }
 
-const Popup = ({
-  title,
-  description,
-  icon,
-  setTypeTransaction,
-  submitHandler,
-}: PopupProps) => {
+const Popup = ({ title, description, icon, submitHandler }: PopupProps) => {
   const [amount, setAmount] = useState<number>(0)
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,12 +32,12 @@ const Popup = ({
 
   const handleSubmission = () => {
     if (submitHandler) {
-      setTypeTransaction(
+      const transactionType =
         title === 'Deposit'
           ? TransactionType.DEPOSIT
           : TransactionType.WITHDRAWAL
-      )
-      submitHandler(amount)
+
+      submitHandler(transactionType, amount)
     }
   }
 

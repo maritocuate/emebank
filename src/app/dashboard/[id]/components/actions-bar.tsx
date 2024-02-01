@@ -4,22 +4,17 @@ import { MinusCircle, PlusCircle } from 'lucide-react'
 import { toast } from '@/components/ui/use-toast'
 import Popup from '@/components/ui/popup'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useUserStore from '@/store/userStore'
 
-enum TransactionType {
-  DEPOSIT = 'deposit',
-  WITHDRAWAL = 'withdrawal',
-}
-
 export default function ActionsBar() {
-  const [typeTransaction, setTypeTransaction] = useState<TransactionType>(
-    TransactionType.DEPOSIT
-  )
   const { data: session } = useSession()
   const { updateBalance } = useUserStore()
 
-  const handleTransaction = async (amount: number) => {
+  const handleTransaction = async (
+    transactionType: TransactionType,
+    amount: number
+  ) => {
     if (!session?.user?.id) {
       toast({ title: 'Sign In', variant: 'destructive' })
       return
@@ -27,7 +22,7 @@ export default function ActionsBar() {
 
     const data = {
       accountId: session.user.id,
-      type: typeTransaction,
+      type: transactionType,
       amount: amount,
     }
 
@@ -35,9 +30,9 @@ export default function ActionsBar() {
       method: 'POST',
       body: JSON.stringify(data),
     })
-      .catch(() => toast({ title: `${typeTransaction} failed` }))
+      .catch(() => toast({ title: `${transactionType} failed` }))
       .then(() => fetchBalance(session.user.id))
-      .then(() => toast({ title: `${typeTransaction} success` }))
+      .then(() => toast({ title: `${transactionType} success` }))
   }
 
   const fetchBalance = async (userId: string) => {
@@ -52,7 +47,6 @@ export default function ActionsBar() {
         title="Deposit"
         description="Select the amount to deposit"
         icon={<PlusCircle size={15} />}
-        setTypeTransaction={setTypeTransaction}
         submitHandler={handleTransaction}
       />
 
@@ -60,7 +54,6 @@ export default function ActionsBar() {
         title="Withdrawal"
         description="Select the amount to withdraw"
         icon={<MinusCircle size={15} />}
-        setTypeTransaction={setTypeTransaction}
         submitHandler={handleTransaction}
       />
     </div>
