@@ -6,11 +6,13 @@ declare module 'next-auth' {
       id: string
       username: string
       balance: number
+      avatar: string
     } & DefaultSession['user']
   }
   interface User {
     id: string
     username: string
     balance: number
+    avatar: string
   }
 }

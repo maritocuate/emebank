@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 
 interface Account {
-  id: number
-  name: string
+  id: string
+  username: string
   balance: number
   email: string
+  avatar: string
 }
 
 interface AccountState {

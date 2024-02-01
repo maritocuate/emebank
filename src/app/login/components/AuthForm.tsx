@@ -15,12 +15,14 @@ import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
 import { getSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import useUserStore from '@/store/userStore'
 
 interface AuthFormProps {
   mode: 'login' | 'register'
 }
 
 export default function AuthForm({ mode }: AuthFormProps) {
+  const { setUser } = useUserStore()
   const router = useRouter()
   const {
     register,
@@ -50,6 +52,17 @@ export default function AuthForm({ mode }: AuthFormProps) {
       } else {
         const session = await getSession()
         const userId = session?.user.id
+
+        if (session?.user) {
+          const { id, username, email, balance, avatar } = session?.user
+          setUser({
+            id,
+            username,
+            email: email as string,
+            balance,
+            avatar,
+          })
+        }
         router.push(`/dashboard/${userId}`)
       }
     }

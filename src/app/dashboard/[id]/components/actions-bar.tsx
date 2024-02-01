@@ -5,6 +5,7 @@ import { toast } from '@/components/ui/use-toast'
 import Popup from '@/components/ui/popup'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+import useUserStore from '@/store/userStore'
 
 enum TransactionType {
   DEPOSIT = 'deposit',
@@ -16,6 +17,7 @@ export default function ActionsBar() {
     TransactionType.DEPOSIT
   )
   const { data: session } = useSession()
+  const { updateBalance } = useUserStore()
 
   const handleTransaction = async (amount: number) => {
     if (!session?.user?.id) {
@@ -34,7 +36,14 @@ export default function ActionsBar() {
       body: JSON.stringify(data),
     })
       .catch(() => toast({ title: `${typeTransaction} failed` }))
+      .then(() => fetchBalance(session.user.id))
       .then(() => toast({ title: `${typeTransaction} success` }))
+  }
+
+  const fetchBalance = async (userId: string) => {
+    await fetch(`/api/accounts/${userId}/balance`)
+      .then(res => res.json())
+      .then(res => updateBalance(res.balance))
   }
 
   return (

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { AuthOptions, Awaitable, Session } from 'next-auth'
+import { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
@@ -74,6 +74,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string
         session.user.username = token.username as string
         session.user.balance = token.balance as number
+        session.user.avatar = token.avatar as string
       }
       return session
     },
@@ -87,6 +88,7 @@ export const authOptions: AuthOptions = {
       token.id = existingUser.id
       token.username = existingUser.username
       token.balance = existingUser.balance
+      token.avatar = existingUser.avatar
 
       return token
     },
