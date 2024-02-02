@@ -66,3 +66,21 @@ export const fetchDeposits = async (id, type) => {
     throw new Error('Failed to fetch deposits!')
   }
 }
+
+export const fetchTransactionsByType = async (id, type) => {
+  try {
+    const deposits = await prisma.transaction.findMany({
+      where: {
+        AND: [{ accountId: id }, { type }],
+      },
+    })
+
+    if (!deposits) {
+      throw new Error('Transactions not found!')
+    }
+
+    return deposits
+  } catch (err) {
+    throw new Error('Failed to fetch transactions!')
+  }
+}

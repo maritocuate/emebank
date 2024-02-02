@@ -8,21 +8,33 @@ import {
 } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { fetchDeposits } from '@/lib/data'
-import { PlusSquare } from 'lucide-react'
+import { PlusSquare, MinusSquare } from 'lucide-react'
 
-export default async function DepositCard({ id }: { id: string }) {
-  const deposits = await fetchDeposits(id, 'increment')
+interface TransactionsCardProps {
+  id: string
+  type: 'deposit' | 'withdrawal'
+}
+
+export default async function TransactionsCard({
+  id,
+  type,
+}: TransactionsCardProps) {
+  const deposits = await fetchDeposits(id, type)
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="space-y-2">
-          <CardTitle>Recent Deposit</CardTitle>
+          <CardTitle>Recent {type}</CardTitle>
           <CardDescription>
-            You made {deposits.length} deposits this month.
+            You made {deposits.length} {type} this month.
           </CardDescription>
         </div>
-        <PlusSquare className="text-primary" size={18} />
+        {type === 'deposit' ? (
+          <PlusSquare className="text-primary" size={18} />
+        ) : (
+          <MinusSquare className="text-red-500" size={18} />
+        )}
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[400px]">

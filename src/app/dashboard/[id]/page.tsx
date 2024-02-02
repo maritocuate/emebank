@@ -13,7 +13,7 @@ import CardPrimaryLoading, {
 } from '@/components/ui/skeletons'
 import DollarCard from './components/dollar-card'
 import MovementsCard from './components/movements-card'
-import DepositCard from './components/deposit-card'
+import TransactionsCard from './components/transactions-card'
 
 interface DashboardPageProps {
   params: {
@@ -45,16 +45,12 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         </div>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <Suspense fallback={<CardSecondaryLoading />}>
-            <DepositCard id={id} />
+            <TransactionsCard id={id} type="deposit" />
           </Suspense>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Transactions</CardTitle>
-              <CardDescription>You made 265 sales this month.</CardDescription>
-            </CardHeader>
-            <CardContent></CardContent>
-          </Card>
+          <Suspense fallback={<CardSecondaryLoading />}>
+            <TransactionsCard id={id} type="withdrawal" />
+          </Suspense>
         </div>
       </div>
     </>
