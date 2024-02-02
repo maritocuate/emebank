@@ -6,13 +6,14 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Suspense } from 'react'
-import { RecentSales } from './components/recent-sales'
-import { CircleDollarSign, CreditCard } from 'lucide-react'
 import ActionsBar from './components/actions-bar'
 import BalanceCard from './components/balance-card'
-import CardPrimaryLoading from '@/components/ui/skeletons'
+import CardPrimaryLoading, {
+  CardSecondaryLoading,
+} from '@/components/ui/skeletons'
 import DollarCard from './components/dollar-card'
 import MovementsCard from './components/movements-card'
+import DepositCard from './components/deposit-card'
 
 interface DashboardPageProps {
   params: {
@@ -43,26 +44,16 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           </Suspense>
         </div>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Overview</CardTitle>
-              <CircleDollarSign className="text-primary" size={18} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">$0.00</div>
-              <p className="text-xs text-muted-foreground">
-                +3.1% from last month
-              </p>
-            </CardContent>
-          </Card>
+          <Suspense fallback={<CardSecondaryLoading />}>
+            <DepositCard id={id} />
+          </Suspense>
+
           <Card>
             <CardHeader>
               <CardTitle>Recent Transactions</CardTitle>
               <CardDescription>You made 265 sales this month.</CardDescription>
             </CardHeader>
-            <CardContent>
-              <RecentSales />
-            </CardContent>
+            <CardContent></CardContent>
           </Card>
         </div>
       </div>
