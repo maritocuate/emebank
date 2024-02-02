@@ -5,16 +5,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-
+import { Suspense } from 'react'
 import { RecentSales } from './components/recent-sales'
-import Logo from './components/logo'
-import { UserNav } from './components/user-nav'
 import { CircleDollarSign, CreditCard } from 'lucide-react'
-import { fetchUser } from '@/lib/data'
 import ActionsBar from './components/actions-bar'
 import BalanceCard from './components/balance-card'
+import CardPrimaryLoading from '@/components/ui/skeletons'
 
-export default async function DashboardPage() {
+interface DashboardPageProps {
+  params: {
+    id: string
+  }
+}
+export default async function DashboardPage({ params }: DashboardPageProps) {
+  const { id } = params
+
   return (
     <>
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -23,7 +28,9 @@ export default async function DashboardPage() {
           <ActionsBar />
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <BalanceCard />
+          <Suspense fallback={<CardPrimaryLoading />}>
+            <BalanceCard id={id} />
+          </Suspense>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

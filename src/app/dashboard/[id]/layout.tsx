@@ -15,7 +15,7 @@ export default async function Layout({
 }: LayoutDashboardProps) {
   const { id } = params
   const user = await fetchUser(id)
-  const { username, email, balance } = user
+  const { username, email } = user
 
   return (
     <nav className="flex flex-col">
