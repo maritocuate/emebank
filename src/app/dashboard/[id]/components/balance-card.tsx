@@ -3,12 +3,7 @@ import { fetchBalance } from '@/lib/data'
 import { CircleDollarSign } from 'lucide-react'
 
 export default async function BalanceCard({ id }: { id: string }) {
-  await timeout(3 * 1000)
   const balance = await fetchBalance(id)
-
-  function timeout(delay: number) {
-    return new Promise(res => setTimeout(res, delay))
-  }
 
   return (
     <Card>
