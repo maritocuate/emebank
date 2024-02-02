@@ -32,3 +32,19 @@ export const fetchBalance = async id => {
     throw new Error('Failed to fetch balance!')
   }
 }
+
+export const fetchTransactions = async id => {
+  try {
+    const account = await prisma.transaction.findMany({
+      where: { accountId: id },
+    })
+
+    if (!account) {
+      throw new Error('Account not found!')
+    }
+
+    return account
+  } catch (err) {
+    throw new Error('Failed to fetch transaction!')
+  }
+}
